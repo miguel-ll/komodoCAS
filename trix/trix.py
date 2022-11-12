@@ -357,6 +357,7 @@ def make_householder(a):
     H -= (2 / np.dot(v, v)) * np.dot(v[:, None], v[None, :])
     return H
 
+# QR decompositio using householder reflections.
 def qr_decomp(A):
     n = len(A)
     Q = np.eye(n)
@@ -367,7 +368,29 @@ def qr_decomp(A):
         A = np.dot(H, A)
     return Q, A
 
+# QR decomposition using the gram-schmidt process.
 def qr_decomp2(A):
     Q = np.array(gram_schmidt(A))
     R = np.matmul(Q, A)
     return Q.T, R
+
+def ldl_decomp(matrix):
+    n = len(matrix)
+    lower = np.eye(n)
+    dig = np.zeros((n,n))
+    dig[0][0] = matrix[0][0]
+    for i in range(n):
+        for j in range(i + 1):
+            sum1 = 0;
+            sum2=0;
+            if (i > j):
+                for k in range(j):
+                    sum1 += lower[i][k]*lower[j][k]*dig[k][k]
+                lower[i][j] = 1/dig[j][j]*( matrix[i][j] - sum1);
+            for h in range(j):
+                sum2 += dig[h][h]*lower[j][h]**2
+                dig[j][j] = matrix[j][j] - sum2
+    return lower, dig, lower.T
+   
+#a = [[4,12,-16],[12,37,-43],[-16,-43,98]]
+#s, r, t = ldl_decomp(a)
