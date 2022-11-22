@@ -4,13 +4,6 @@ from scipy import linalg
 from numpy import pi, exp,sqrt, prod
 from vec import Vector,proj
 
-#def print_mat(mat):
-#    for x in mat:
-#        print("[",end=' ')
-#        for y in x:
-#            print(y, end=' ')
-#        print("]")
-
 # The input matrix must be a (m x n) matrix such that m < n. The purpose of this is to solve a linear system of equations, but it can be used to calculate determinants via the gauss_det() function (although the bareiss_det() function is preferred).
 def solve_sys(mat):
     num = len(mat)
@@ -179,6 +172,7 @@ def cholesky(matrix):
                     lower[i][j] = (matrix[i][j] - sum1) / lower[j][j];
     return lower
 
+# -- returns a NP ARRAY!
 def transpose(B):
     A = np.copy(B)
     N = len(A)
@@ -191,6 +185,7 @@ def transpose(B):
 #print(transpose(matrix))
 #print(cholesky(matrix));
 
+# -- returns a NP ARRAY!
 def mrank(A):
     return np.linalg.matrix_rank(A)
 
@@ -268,13 +263,14 @@ def tri_eig(A):
     return z
 
 # Polar decomposition. A = UP, where U is a unitary matrix and P is a positive semi-definite hermitian matrix.
+# -- returns a NP ARRAY!
 def polar_decomp(A):
     A = np.array(A)
     P = linalg.sqrtm( np.matmul(A.T,A) )
     U = np.matmul(A, np.linalg.inv(P))
     return U,P
 
-
+# returns a NP ARRAY!
 def circulant(l):
     n = len(l)
     b = np.zeros((n,n))
@@ -292,6 +288,7 @@ def tril(a,n=0):
             else:
                 break
 
+# returns a NP ARRAY!
 def pascal(n):
     a = np.array([[0 for _ in range(n)] for _ in range(n)], dtype=np.float32)
     z=1
@@ -303,6 +300,7 @@ def pascal(n):
     a += np.eye(n)
     return np.matmul(a.T,a)
 
+# returns a NP ARRAY!
 def hilbert(n):
     h = np.zeros((n,n))
     for i in range(1,n+1):
@@ -310,6 +308,7 @@ def hilbert(n):
             h[i-1][j-1] = 1/(i+j-1)
     return h
 
+# returns a NP ARRAY!
 def invhilbert(n):
     h = np.zeros((n,n))
     for i in range(1,n+1):
@@ -317,6 +316,7 @@ def invhilbert(n):
             h[i-1][j-1] = (-1)**(i+j) * (i+j-1) * comb(n+i-1,n-j) * comb(n+j-1,n-i) * (comb(i+j-2,i-1))**2
     return h
 
+# Determinant of a hilbert matrix.
 def hdet(n):
     cn = 1
     for i in range(1,n):
@@ -326,6 +326,7 @@ def hdet(n):
         cn2*=factorial(j)
     return (cn**4)/cn2
 
+# Get the mth column of a square matrix.
 def col(a,m):
     l = []
     n = len(a)
@@ -333,6 +334,7 @@ def col(a,m):
         l.append(a[i][m])
     return l
 
+# Apply the Gram Schmidt process to a square matrix A.
 def gram_schmidt(A):
     n = len(A)
     res = []
@@ -349,6 +351,8 @@ def gram_schmidt(A):
         res.append(list(q.unit()))
     return res
 
+# Householder reflections
+# returns a NP ARRAY!
 def make_householder(a):
     n = len(a)
     v = a / (a[0] + np.copysign(np.linalg.norm(a), a[0]))
@@ -358,6 +362,8 @@ def make_householder(a):
     return H
 
 # QR decompositio using householder reflections.
+# returns a NP ARRAY!
+
 def qr_decomp(A):
     n = len(A)
     Q = np.eye(n)
@@ -369,11 +375,13 @@ def qr_decomp(A):
     return Q, A
 
 # QR decomposition using the gram-schmidt process.
+# returns a NP ARRAY!
 def qr_decomp2(A):
     Q = np.array(gram_schmidt(A))
     R = np.matmul(Q, A)
     return Q.T, R
 
+# returns a NP ARRAY!
 def ldl_decomp(matrix):
     n = len(matrix)
     lower = np.eye(n)
