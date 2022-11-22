@@ -243,7 +243,7 @@ def c_eval(b,n,j):
 		res+= b[i]*wn(n)**(i*j)
 	return res
 
-# Eigenvalues and eigenvectors for circular matrices. The eigenvectors are stored horizontally; i.e P = evec.
+# Eigenvalues and eigenvectors for circular matrices. The eigenvectors are stored horizontally.
 def circ_eig(A):
 	n = len(A)
 	b = A[0]
