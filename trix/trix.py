@@ -172,7 +172,6 @@ def cholesky(matrix):
                     lower[i][j] = (matrix[i][j] - sum1) / lower[j][j];
     return lower
 
-# -- returns a NP ARRAY!
 def transpose(B):
     A = np.copy(B)
     N = len(A)
@@ -180,14 +179,6 @@ def transpose(B):
         for j in range(i+1,N):
             A[i][j], A[j][i] = A[j][i], A[i][j]
     return A
-
-#matrix = [[4, 12, -16], [12, 37, -43], [-16, -43, 98]];
-#print(transpose(matrix))
-#print(cholesky(matrix));
-
-# -- returns a NP ARRAY!
-def mrank(A):
-    return np.linalg.matrix_rank(A)
 
 # Back substitution for upper triangular matrices
 def back_subs(A,b):
@@ -263,14 +254,13 @@ def tri_eig(A):
     return z
 
 # Polar decomposition. A = UP, where U is a unitary matrix and P is a positive semi-definite hermitian matrix.
-# -- returns a NP ARRAY!
 def polar_decomp(A):
     A = np.array(A)
     P = linalg.sqrtm( np.matmul(A.T,A) )
     U = np.matmul(A, np.linalg.inv(P))
     return U,P
 
-# returns a NP ARRAY!
+# Returns a circulant np.array spanned by l.
 def circulant(l):
     n = len(l)
     b = np.zeros((n,n))
@@ -288,7 +278,6 @@ def tril(a,n=0):
             else:
                 break
 
-# returns a NP ARRAY!
 def pascal(n):
     a = np.array([[0 for _ in range(n)] for _ in range(n)], dtype=np.float32)
     z=1
@@ -300,7 +289,6 @@ def pascal(n):
     a += np.eye(n)
     return np.matmul(a.T,a)
 
-# returns a NP ARRAY!
 def hilbert(n):
     h = np.zeros((n,n))
     for i in range(1,n+1):
@@ -308,7 +296,6 @@ def hilbert(n):
             h[i-1][j-1] = 1/(i+j-1)
     return h
 
-# returns a NP ARRAY!
 def invhilbert(n):
     h = np.zeros((n,n))
     for i in range(1,n+1):
@@ -352,7 +339,6 @@ def gram_schmidt(A):
     return res
 
 # Householder reflections
-# returns a NP ARRAY!
 def make_householder(a):
     n = len(a)
     v = a / (a[0] + np.copysign(np.linalg.norm(a), a[0]))
@@ -361,9 +347,7 @@ def make_householder(a):
     H -= (2 / np.dot(v, v)) * np.dot(v[:, None], v[None, :])
     return H
 
-# QR decompositio using householder reflections.
-# returns a NP ARRAY!
-
+# QR decomposition using householder reflections.
 def qr_decomp(A):
     n = len(A)
     Q = np.eye(n)
@@ -375,13 +359,12 @@ def qr_decomp(A):
     return Q, A
 
 # QR decomposition using the gram-schmidt process.
-# returns a NP ARRAY!
 def qr_decomp2(A):
     Q = np.array(gram_schmidt(A))
     R = np.matmul(Q, A)
     return Q.T, R
 
-# returns a NP ARRAY!
+# Decomposes a square, symmetric matrix into L, D and L^T. 
 def ldl_decomp(matrix):
     n = len(matrix)
     lower = np.eye(n)
